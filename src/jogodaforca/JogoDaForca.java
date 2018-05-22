@@ -278,6 +278,7 @@ public class JogoDaForca extends JFrame{
             Text_Letra.setText("");
             Opcao.setSelectedIndex(0);
             Barra_de_Status.setText(" Numero de Letra(s) errada(s): 0");
+            dispose();
         }
  }
       
@@ -287,11 +288,7 @@ public class JogoDaForca extends JFrame{
     private int Erros;
     
         void setErro(int Numeros_de_Erros) {
-            Erros = Numeros_de_Erros;
-            if(Erros == 10) {
-                this.setVisible(false);
-            }
-            
+            Erros = Numeros_de_Erros;  
         }  
             
         public void paintComponent(Graphics g){
