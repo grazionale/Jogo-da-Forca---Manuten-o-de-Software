@@ -59,7 +59,7 @@ public class JogoDaForca extends JFrame{
     private JLabel Ultima_Letra_Escolhida = new JLabel(" Utima Letra Escolhida: ");
     private JTextField Text_Letra = new JTextField();
     private JButton Palavra = new JButton("Ja sei a palavra certa!");
-    
+    private char[] Array_Letras_Escolhidas = new char[25];
     
     // Definindo o layout da Janela
     private GridLayout Layout = new GridLayout(2,1);
@@ -88,6 +88,7 @@ public class JogoDaForca extends JFrame{
         
         // Configurações Iniciais
         for (int i=0; i<12; ++i){
+            System.out.println("parada foi chamada");
             Letra[i] = new JLabel("__");
             Panel_de_Controle.add(Letra[i]);
             Letra[i].setFont(new Font("Serif" , Font.BOLD, 48));  
@@ -152,8 +153,13 @@ public class JogoDaForca extends JFrame{
                         Tamanho_da_Palavra_Misteriosa = Palavra_Misteriosa.length();
                     
                         for (int i=0; i<Tamanho_da_Palavra_Misteriosa; ++i){
-                            Letra[i].setVisible(true);
-                            Letra[i].setText("__");
+                            if(Palavra_Misteriosa.charAt(i) != ' '){
+                                Letra[i].setVisible(true);
+                                Letra[i].setText("__");
+                            }else{
+                                Letra[i].setVisible(true);
+                                Letra[i].setText("  ");
+                            }
                         }
                     }
                 }
@@ -188,7 +194,19 @@ public class JogoDaForca extends JFrame{
             if(event.getStateChange() == ItemEvent.SELECTED){
                 
                 // Exibindo a última letra selecionada
+                
+                
+                for(int u=0; u<Tamanho_da_Palavra_Misteriosa; u++){
+                    if(Opcao.getSelectedItem() == Array_Letras_Escolhidas[u]){
+                        JOptionPane.showMessageDialog(JogoDaForca.this, "A letra já foi escolhida");
+                        return;
+                    }
+                }
                 Text_Letra.setText("" + Opcao.getSelectedItem());
+                for(int t=0; t<Array_Letras_Escolhidas.lenght(); t++){
+                    
+                }
+                
                 
                 
                 Letras_Encontradas = 0;
@@ -229,6 +247,7 @@ public class JogoDaForca extends JFrame{
                         }
                     }
                 }
+                
             }
         }
         
@@ -274,7 +293,7 @@ public class JogoDaForca extends JFrame{
             
         public void paintComponent(Graphics g){
             super.paintComponents(g);
-
+//mexer pro erro do layout
             if (Erros == 1){
                 g.fillOval(5,5,205,205);
                 repaint();
