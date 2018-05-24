@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -59,7 +60,7 @@ public class JogoDaForca extends JFrame{
     private JLabel Ultima_Letra_Escolhida = new JLabel(" Utima Letra Escolhida: ");
     private JTextField Text_Letra = new JTextField();
     private JButton Palavra = new JButton("Ja sei a palavra certa!");
-    private char[] Array_Letras_Escolhidas = new char[25];
+    private ArrayList<String> Array_Letras_Escolhidas = new ArrayList<>();
     
     // Definindo o layout da Janela
     private GridLayout Layout = new GridLayout(2,1);
@@ -88,7 +89,6 @@ public class JogoDaForca extends JFrame{
         
         // Configurações Iniciais
         for (int i=0; i<12; ++i){
-            System.out.println("parada foi chamada");
             Letra[i] = new JLabel("__");
             Panel_de_Controle.add(Letra[i]);
             Letra[i].setFont(new Font("Serif" , Font.BOLD, 48));  
@@ -117,9 +117,7 @@ public class JogoDaForca extends JFrame{
         Opcao.addItemListener(Eventos);
      
  }   
-    
-    
-    
+
     private class Eventos_JogoDaForca implements ActionListener, ItemListener{
         
         private String Palavra_Misteriosa, Palavra_Certa;
@@ -161,6 +159,7 @@ public class JogoDaForca extends JFrame{
                                 Letra[i].setText("  ");
                             }
                         }
+                        
                     }
                 }
             }
@@ -193,22 +192,24 @@ public class JogoDaForca extends JFrame{
         public void itemStateChanged(ItemEvent event){
             if(event.getStateChange() == ItemEvent.SELECTED){
                 
+                
                 // Exibindo a última letra selecionada
                 
                 
-                for(int u=0; u<Tamanho_da_Palavra_Misteriosa; u++){
-                    if(Opcao.getSelectedItem() == Array_Letras_Escolhidas[u]){
-                        JOptionPane.showMessageDialog(JogoDaForca.this, "A letra já foi escolhida");
-                        return;
+                for(int u=0; u<Array_Letras_Escolhidas.size(); u++) {
+ 
+                    if(!Array_Letras_Escolhidas.isEmpty()) {
+                        if(Opcao.getSelectedItem().toString().equals(Array_Letras_Escolhidas.get(u))) {
+                            JOptionPane.showMessageDialog(JogoDaForca.this, "A letra já foi escolhida");
+                            return;
+                        }
                     }
+                                        
                 }
+                
+                Array_Letras_Escolhidas.add(Opcao.getSelectedItem().toString());
+                
                 Text_Letra.setText("" + Opcao.getSelectedItem());
-                for(int t=0; t<Array_Letras_Escolhidas.lenght(); t++){
-                    
-                }
-                
-                
-                
                 Letras_Encontradas = 0;
                 // Verificando se a letra selecionada é existente na palavra misteriosa
                 for (int i=0; i<Tamanho_da_Palavra_Misteriosa; ++i){
@@ -264,46 +265,50 @@ public class JogoDaForca extends JFrame{
             JOptionPane.showMessageDialog(JogoDaForca.this, "Parabéns!!!");  
             Atualizar();
         }
-    
-    
+
         public void Perdir(){
             JOptionPane.showMessageDialog(JogoDaForca.this, "Você falhou! \n Tente Novamete!");
             Atualizar();
         }
     
         public void Atualizar(){
-            Panel_da_Animacao.setErro(7);
+            Panel_da_Animacao.setErro(10);
+            Panel_da_Animacao = new Enforcado();
+            Array_Letras_Escolhidas = new ArrayList<>();
             Text_Letra.setText("");
             Opcao.setSelectedIndex(0);
             Barra_de_Status.setText(" Numero de Letra(s) errada(s): 0");
         }
  }
       
-    
-    
-    
-  
+
   class Enforcado extends JPanel{ 
     
     private int Erros;
     
         void setErro(int Numeros_de_Erros) {
             Erros = Numeros_de_Erros;
+            if(Erros == 10) {
+                this.setVisible(false);
+            }
+            
         }  
             
         public void paintComponent(Graphics g){
             super.paintComponents(g);
 //mexer pro erro do layout
+
             if (Erros == 1){
+                this.setVisible(true);
                 g.fillOval(5,5,205,205);
-                repaint();
+//                repaint();
             }
             
             if (Erros == 2){
                 g.fillOval(5,5,205,205);
                 g.setColor(Color.WHITE);
                 g.fillOval(55,65,30,30);  
-                repaint();
+//                repaint();
             }
             
             if (Erros == 3){
@@ -312,7 +317,7 @@ public class JogoDaForca extends JFrame{
                 g.setColor(Color.WHITE);
                 g.fillOval(55,65,30,30);
                 g.fillOval(135,65,30,30);
-                repaint();
+//                repaint();
             }
             
             if (Erros == 4){
@@ -322,7 +327,7 @@ public class JogoDaForca extends JFrame{
                 g.fillOval(55,65,30,30);
                 g.fillOval(135,65,30,30);
                 g.fillOval(50,110,120,60); 
-                repaint();
+//                repaint();
             }
             
             if (Erros == 5){
@@ -333,7 +338,7 @@ public class JogoDaForca extends JFrame{
                 g.fillOval(55,65,30,30);
                 g.fillOval(135,65,30,30);
                 g.fillOval(50,110,120,60);  
-                repaint();
+//                repaint();
             }
             
             if (Erros == 6){
@@ -351,13 +356,13 @@ public class JogoDaForca extends JFrame{
                 g.fillOval(135,65,30,30);
                 // Desenhando a boca
                 g.fillOval(50,110,120,60); 
-                repaint();
+//                repaint();
             }
             
             // Limpa o Panel
             if (Erros == 7){
                 g.clearRect(0,0,250,250);
-                repaint();
+//                repaint();
             }
         }
     }  
@@ -367,7 +372,7 @@ public class JogoDaForca extends JFrame{
         // Propriedades da Janela
         JogoDaForca Propriedades = new  JogoDaForca();
         Propriedades.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Propriedades.setSize(800,520);
+        Propriedades.setSize(1100, 600);
         Propriedades.setVisible(true);
         Propriedades.setResizable(false);
         Propriedades.setLocationRelativeTo(null);
